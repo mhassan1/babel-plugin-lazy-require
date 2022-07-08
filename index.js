@@ -32,7 +32,7 @@ exports.default = function ({ types: t }) {
             variableDeclarations.reverse();
 
             const properties = [];
-            for (const [name, { identifier, requireString, isConst, outerFunc }] of declarations) {
+            for (const [name, { identifier, requireString, isConst, outerFunc, propertyName }] of declarations) {
                 const nameIdentifier = t.identifier(name);
                 const initializedIdentifier = t.identifier('initialized');
                 const initializedMember = t.memberExpression(identifier, initializedIdentifier);
@@ -44,11 +44,15 @@ exports.default = function ({ types: t }) {
                     ? t.callExpression(outerFunc, [requireExpression])
                     : requireExpression;
 
+                const requireExpressionWithOuterFuncAndProp = propertyName
+                    ? t.memberExpression(requireExpressionWithOuterFunc, t.identifier(propertyName))
+                    : requireExpressionWithOuterFunc;
+
                 properties.push(t.objectMethod('get', nameIdentifier, [], t.blockStatement([
                     t.ifStatement(
                         t.unaryExpression('!', initializedMember),
                         t.blockStatement([
-                            t.expressionStatement(t.assignmentExpression('=', valueMember, requireExpressionWithOuterFunc)),
+                            t.expressionStatement(t.assignmentExpression('=', valueMember, requireExpressionWithOuterFuncAndProp)),
                             t.expressionStatement(t.assignmentExpression('=', initializedMember, t.booleanLiteral(true)))
                         ])
                     ),
@@ -64,7 +68,7 @@ exports.default = function ({ types: t }) {
                         t.ifStatement(
                             t.unaryExpression('!', initializedMember),
                             t.blockStatement([
-                                t.expressionStatement(requireExpressionWithOuterFunc),
+                                t.expressionStatement(requireExpressionWithOuterFuncAndProp),
                                 t.expressionStatement(t.assignmentExpression('=', initializedMember, t.booleanLiteral(true)))
                             ])
                         ),
@@ -97,32 +101,45 @@ exports.default = function ({ types: t }) {
 
             path.traverse({
                 VariableDeclarator(path) {
+                    let remove = false;
+
+                    const addDeclarations = (settings) => {
+                        if (t.isIdentifier(path.node.id)) {
+                            this.declarations.set(path.node.id.name, Object.assign({}, settings));
+                            remove = true;
+                        } else if (t.isObjectPattern(path.node.id) && path.node.id.properties.every(prop => t.isObjectProperty(prop) && t.isIdentifier(prop.key) && t.isIdentifier(prop.value))) {
+                            for (const prop of path.node.id.properties) {
+                                this.declarations.set(prop.value.name, Object.assign({}, settings, { propertyName: prop.key.name }));
+                                remove = true;
+                            }
+                        }
+                    };
+
                     if (
-                        !t.isIdentifier(path.node.id) ||
                         !t.isCallExpression(path.node.init)
                     ) {
                         return;
                     }
 
                     if (hasRequireCall(path.node.init)) {
-                        this.declarations.set(path.node.id.name, {
+                        addDeclarations({
                             node: path.node,
                             isConst: path.parent.kind === 'const',
                             requireString: path.node.init.arguments[0].value
-                        });
+                        })
                     } else if (path.node.init.arguments.length === 1 && hasRequireCall(path.node.init.arguments[0])) {
-                        this.declarations.set(path.node.id.name, {
+                        addDeclarations({
                             node: path.node,
                             isConst: path.parent.kind === 'const',
                             outerFunc: path.node.init.callee,
                             requireString: path.node.init.arguments[0].arguments[0].value
                         });
-                    } else {
-                        return;
                     }
 
                     // Since this is going to be replaced, we don't need it any more
-                    path.remove();
+                    if (remove) {
+                        path.remove();
+                    }
                 }
             }, { declarations: this.declarations });
         }
