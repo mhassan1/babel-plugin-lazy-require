@@ -5,6 +5,8 @@ require('static-require');
 const constWrappedRequire = noop(require('const-wrapped-require'));
 let letWrappedRequire = noop(require('let-wrapped-require'));
 const constWrappedRequireWithArgs = noop(require('const-wrapped-require'), 'data');
+let { destructured, destructuredBeforeRename: destructuredAfterRename } = noop(require('let-global-require-destructured-object'));
+const [ destructuredItem ] = require('const-global-destructured-array');
 
 const obj = {
     letGlobalRequire: () => {
@@ -19,6 +21,8 @@ const obj = {
             try {
                 obj.constGlobalRequire = varGlobalRequire;
             } catch (letGlobalRequire) { }
+            destructured();
+            destructuredAfterRename();
         }
 
         class constGlobalRequire {

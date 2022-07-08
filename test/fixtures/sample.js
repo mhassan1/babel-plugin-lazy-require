@@ -13,6 +13,12 @@ const _constWrappedRequire = {
 const _letWrappedRequire = {
     initialized: false
 };
+const _destructured = {
+    initialized: false
+};
+const _destructuredAfterRename = {
+    initialized: false
+};
 const _nonglobalRequire = {
     initialized: false
 };
@@ -91,6 +97,42 @@ const _imports = {
         _letWrappedRequire.value = value;
     },
 
+    get destructured() {
+        if (!_destructured.initialized) {
+            _destructured.value = noop(require("let-global-require-destructured-object")).destructured;
+            _destructured.initialized = true;
+        }
+
+        return _destructured.value;
+    },
+
+    set destructured(value) {
+        if (!_destructured.initialized) {
+            noop(require("let-global-require-destructured-object")).destructured;
+            _destructured.initialized = true;
+        }
+
+        _destructured.value = value;
+    },
+
+    get destructuredAfterRename() {
+        if (!_destructuredAfterRename.initialized) {
+            _destructuredAfterRename.value = noop(require("let-global-require-destructured-object")).destructuredBeforeRename;
+            _destructuredAfterRename.initialized = true;
+        }
+
+        return _destructuredAfterRename.value;
+    },
+
+    set destructuredAfterRename(value) {
+        if (!_destructuredAfterRename.initialized) {
+            noop(require("let-global-require-destructured-object")).destructuredBeforeRename;
+            _destructuredAfterRename.initialized = true;
+        }
+
+        _destructuredAfterRename.value = value;
+    },
+
     get nonglobalRequire() {
         if (!_nonglobalRequire.initialized) {
             _nonglobalRequire.value = require("nonglobal-require");
@@ -105,6 +147,9 @@ const _imports = {
 require('static-require');
 
 const constWrappedRequireWithArgs = noop(require('const-wrapped-require'), 'data');
+
+const [destructuredItem] = require('const-global-destructured-array');
+
 const obj = {
     letGlobalRequire: () => {
         function varGlobalRequire() {
@@ -117,6 +162,10 @@ const obj = {
             try {
                 obj.constGlobalRequire = _imports.varGlobalRequire;
             } catch (letGlobalRequire) {}
+
+            _imports.destructured();
+
+            _imports.destructuredAfterRename();
         }
 
         class constGlobalRequire {
