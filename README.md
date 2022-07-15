@@ -67,6 +67,9 @@ const someModule = require('some-module')
 let someModule = require('some-module')
 var someModule = require('some-module')
 
+// destructuring
+const { someFunction } = require('some-module')
+
 // one layer of wrapping
 // this is useful for wrappers like `_interopRequireWildcard` from Babel `preset-env`
 const someWrappedModule = wrap(require('some-module'))
