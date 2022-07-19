@@ -154,6 +154,9 @@ const obj = {
     letGlobalRequire: () => {
         function varGlobalRequire() {
             _imports.constGlobalRequire.prop = 5;
+
+            fns[_imports.constGlobalRequire]();
+
             _imports.letGlobalRequire = {};
             const varGlobalRequire = {
                 foo: '13'

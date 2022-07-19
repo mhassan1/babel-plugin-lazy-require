@@ -162,7 +162,7 @@ exports.default = function ({ types: t }) {
 
             // We also don't care about something that has been accessed
             // off of a parent object (e.g. the `b` in `a.b`)
-            if (t.isMemberExpression(path.parent) && path.parent.property === path.node) {
+            if (t.isMemberExpression(path.parent) && path.parent.property === path.node && !path.parent.computed) {
                 return;
             }
 

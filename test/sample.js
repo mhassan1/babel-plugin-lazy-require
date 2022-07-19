@@ -14,6 +14,7 @@ const obj = {
             const nonglobalRequire = require('nonglobal-require');
 
             constGlobalRequire.prop = 5;
+            fns[constGlobalRequire]()
             letGlobalRequire = {};
             const varGlobalRequire = {
                 foo: '13'
