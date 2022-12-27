@@ -10,25 +10,33 @@ const [ destructuredItem ] = require('const-global-destructured-array');
 
 const obj = {
     letGlobalRequire: () => {
-        function varGlobalRequire() {
-            const nonglobalRequire = require('nonglobal-require');
+        const nonglobalRequire = require('nonglobal-require');
 
-            constGlobalRequire.prop = 5;
-            fns[constGlobalRequire]()
-            letGlobalRequire = {};
+        constGlobalRequire.prop = 5;
+        fns[constGlobalRequire]()
+        letGlobalRequire = {};
+        try {
+            obj.constGlobalRequire = varGlobalRequire;
+        } catch (letGlobalRequire) { }
+        destructured();
+        destructuredAfterRename();
+
+        closure2(letWrappedRequire => {
+            closure1(() => {
+                letWrappedRequire()
+            })
+        })
+    },
+    varGlobalRequire() {
+        function varGlobalRequire() {
             const varGlobalRequire = {
                 foo: '13'
-            };
-            try {
-                obj.constGlobalRequire = varGlobalRequire;
-            } catch (letGlobalRequire) { }
-            destructured();
-            destructuredAfterRename();
+            }
+            const x = varGlobalRequire
         }
-
+        const x = varGlobalRequire
         class constGlobalRequire {
-            letGlobalRequire() { }
+            letGlobalRequire() {}
         }
-    },
-    varGlobalRequire() { }
+    }
 }

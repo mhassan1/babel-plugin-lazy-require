@@ -152,31 +152,41 @@ const [destructuredItem] = require('const-global-destructured-array');
 
 const obj = {
     letGlobalRequire: () => {
+        _imports.constGlobalRequire.prop = 5;
+
+        fns[_imports.constGlobalRequire]();
+
+        _imports.letGlobalRequire = {};
+
+        try {
+            obj.constGlobalRequire = _imports.varGlobalRequire;
+        } catch (letGlobalRequire) {}
+
+        _imports.destructured();
+
+        _imports.destructuredAfterRename();
+
+        closure2(letWrappedRequire => {
+            closure1(() => {
+                letWrappedRequire();
+            });
+        });
+    },
+
+    varGlobalRequire() {
         function varGlobalRequire() {
-            _imports.constGlobalRequire.prop = 5;
-
-            fns[_imports.constGlobalRequire]();
-
-            _imports.letGlobalRequire = {};
             const varGlobalRequire = {
                 foo: '13'
             };
-
-            try {
-                obj.constGlobalRequire = _imports.varGlobalRequire;
-            } catch (letGlobalRequire) {}
-
-            _imports.destructured();
-
-            _imports.destructuredAfterRename();
+            const x = varGlobalRequire;
         }
+
+        const x = varGlobalRequire;
 
         class constGlobalRequire {
             letGlobalRequire() {}
 
         }
-    },
-
-    varGlobalRequire() {}
+    }
 
 };

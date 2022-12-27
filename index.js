@@ -174,7 +174,7 @@ exports.default = function ({ types: t }) {
             // If a binding is found, but either isn't derived from the same
             // scope as our requires or isn't in our declarations map, we
             // can't do anything with it
-            const binding = path.scope.bindings[path.node.name];
+            const binding = path.scope.getBinding(path.node.name);
             if (binding && binding.scope !== this.requireScope) {
                 return;
             }
