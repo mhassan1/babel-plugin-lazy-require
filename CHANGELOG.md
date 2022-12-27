@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.2](https://github.com/mhassan1/babel-plugin-lazy-require/compare/v1.2.1...v1.2.2) (2022-12-27)
+
+
+### Bug Fixes
+
+* look for binding in ancestor scopes ([e730160](https://github.com/mhassan1/babel-plugin-lazy-require/commit/e7301607c3aa8c173993498b6206539f9f26b093))
+
 ### [1.2.1](https://github.com/mhassan1/babel-plugin-lazy-require/compare/v1.2.0...v1.2.1) (2022-07-20)
 
 
