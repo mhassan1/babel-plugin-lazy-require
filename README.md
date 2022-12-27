@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/mhassan1/babel-plugin-lazy-require.svg?branch=master)](https://travis-ci.org/mhassan1/babel-plugin-lazy-require)
+[![Build Status](https://app.travis-ci.com/mhassan1/babel-plugin-lazy-require.svg?branch=main)](https://app.travis-ci.com/mhassan1/babel-plugin-lazy-require)
 # babel-plugin-lazy-require
 
 Transform global require statements that run on module load to lazily evaluated
