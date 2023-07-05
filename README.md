@@ -12,7 +12,7 @@ certain conditions and when startup time and/or memory footprint are important.
 To install:
 
 ```
-npm install --save-dev babel-cli@6 babel-plugin-lazy-require
+npm install --save-dev @babel/cli @babel/core babel-plugin-lazy-require
 ```
 
 To run:
@@ -29,7 +29,7 @@ babel <your-code> --plugins babel-plugin-lazy-require
 // Module is imported here
 const someModule = require('some-module');
 
-function myCode() { 
+function myCode() {
     // Module is only actually used here
     someModule.doSomething();
 }
