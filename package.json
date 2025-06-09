@@ -27,8 +27,8 @@
   },
   "homepage": "https://github.com/mhassan1/babel-plugin-lazy-require#readme",
   "devDependencies": {
-    "@babel/cli": "^7.22.6",
-    "@babel/core": "^7.22.6",
+    "@babel/cli": "^8.0.0-beta.0",
+    "@babel/core": "^8.0.0-beta.0",
     "nyc": "^15.1.0",
     "standard-version": "^9.5.0"
   },
