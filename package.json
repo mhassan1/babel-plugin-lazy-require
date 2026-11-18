@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "nyc babel test --ignore test/fixtures --plugins ./index.js --out-dir test-dist && diff -b test-dist/sample.js test/fixtures/sample.js",
-    "release": "standard-version"
+    "release": "commit-and-tag-version"
   },
   "files": [
     "index.js"
@@ -29,8 +29,9 @@
   "devDependencies": {
     "@babel/cli": "^8.0.0-beta.0",
     "@babel/core": "^8.0.0-beta.0",
-    "nyc": "^18.0.0",
-    "standard-version": "^9.5.0"
+    "commit-and-tag-version": "^13.3.0",
+    "conventional-changelog-conventionalcommits": "^10.4.1",
+    "nyc": "^18.0.0"
   },
   "nyc": {
     "exclude": [
